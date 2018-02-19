@@ -14,29 +14,26 @@
 
 <script>
 
-
-   (function() {
-       const cScope = this.scope;
-
-       setInterval(function () {
-            if (!window.leaflet) return;
-            clearInterval(this);
-
+   (function(scope) {
+      var timer = setInterval(function() {
+   if (!window.leaflet) return;
+   clearInterval(timer);
            var map;
            var token = L.mapbox.accessToken = 'pk.eyJ1IjoiYWxtYWhhIiwiYSI6ImM4M2YxY2U3ZDVhNTg3YjdkZWI0MDRkNmU5YzU5NWI4In0.5g65rHetoEtp1RqK8t2gsA';
            var mapKey = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' +  token;
-           map = L.mapbox.map('mapid', 'mapbox.light', {zoomControl:true}).setView([24.6454, 46.6294],12);
+           map = L.mapbox.map('mapid', 'mapbox.light', {zoomControl:true}).setView([24.72493156325539, 46.64233707632205], 13);
            L.tileLayer(mapKey, {id: 'mapbox.light'}).addTo(map);
 
-            cScope.$watch('msg.payload', function(data) {
+            scope.$watch('msg', function(data) {
             //setTimeout(function() {
-            console.dir(data);
+
+            console.dir("hey there girl" + data);
 
                for (var i = 0; i < data.length; i++) {
-                   L.circleMarker([data[i].lat, data[i].lng],{radius: data[i].CO*30, stroke:false, color:"#632daf", fillOpacity: .5}).addTo(map);
+                   L.circleMarker([data[i].lat, data[i].lng],{radius: data[i].CO*20, stroke:false, color:"#632daf", fillOpacity: .5}).addTo(map);
                    console.log(data[i].lng, data[i].lat);
                }
-           });
+
 
            // map.on('click', function(e) {
            //     console.log("CLICKED");
@@ -47,22 +44,25 @@
            //     marker = L.circleMarker(e.latlng).addTo(map);
            // });
 
-        // function onMapClick(e) {
-        // alert("You clicked the map at " + e.latlng);
-        // }
+function onMapClick(e) {
+alert("You clicked the map at " + e.latlng);
+}
 
-//map.on('click', onMapClick);
+map.on('click', onMapClick);
 
 
+    });
+            setTimeout(function () {
+            map.invalidateSize();
+            }, 100);
 
-           setTimeout(function () {
-               map.invalidateSize();
-           }, 100);
+
        }, 100);
 
 
 
-   })();
+   })(scope);
+
 </script>
 
 

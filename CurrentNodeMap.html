@@ -1,0 +1,28 @@
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+
+
+<div id="mapid" style="width: 100% ; height: 100% ;"></div>
+
+<script>
+   (function() {
+       const cScope = this.scope;
+       var timer =  setInterval(function () {
+            if (!window.$ || !window.L) return;
+            //test
+            clearInterval(timer);
+            var map;
+            var token = L.mapbox.accessToken = 'pk.eyJ1IjoiYWxtYWhhIiwiYSI6ImM4M2YxY2U3ZDVhNTg3YjdkZWI0MDRkNmU5YzU5NWI4In0.5g65rHetoEtp1RqK8t2gsA';
+            var mapKey = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' +  token;
+            map = L.mapbox.map('mapid', 'mapbox.light', {zoomControl:true}).setView([24.6454, 46.6294],12);
+            L.tileLayer(mapKey, {id: 'mapbox.light'}).addTo(map);
+            cScope.$watch('msg.payload', function(data) {
+               for (var i = 0; i < data.length; i++) {
+                   L.circleMarker([data[i].lat, data[i].lng],{radius: data[i].CO*30, stroke:false, color:"#632daf", fillOpacity: .5}).addTo(map);
+                   console.log(data[i].lng, data[i].lat);
+               }
+            });
+        }, 1000);
+    })();
+</script>
